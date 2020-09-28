@@ -1,5 +1,3 @@
-const { resolve } = require("path");
-
 class BookDao {
   constructor(db) {
     this._db = db; 
@@ -24,7 +22,7 @@ class BookDao {
         [id],
         (error, book) => {
           if (error) reject('Nao foi encontrado esse livro.');
-          return resolve(book);
+          resolve(book);
         }
       )
     })
