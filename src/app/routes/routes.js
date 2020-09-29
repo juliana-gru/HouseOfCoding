@@ -1,79 +1,28 @@
-const { check, validationResult } = require('express-validator/check');
+const { check } = require('express-validator/check');
 
-const BookDao = require('../../infra/book-dao');
-const db = require('../../config/database');
+const BookController = require('../controllers/book-controller');
+const bookController = new BookController();
+
+const BaseController = require('../controllers/base-controller');
+const baseController = new BaseController();
 
 module.exports = app => {
-  app.get('/', (req, res) => {
-    res.marko(require('../views/base/home/home.marko'));
-  });
+  app.get('/', baseController.home());
   
-  app.get('/livros', (req, res) => {
-    const bookDao = new BookDao(db);
+  app.get('/livros', bookController.list());
 
-    bookDao.list().then(livros => {
-      res.marko(
-        require('../views/books/list/list.marko'),
-        {
-          livros: livros
-        }
-      )
-    }).catch(error => console.log(error));    
-  });
-
-  app.get('/livros/form', (req, res) => {
-    res.marko(require('../views/books/form/form'), {livro: {}});
-  });
+  app.get('/livros/form', bookController.registerForm());
   
-  app.get('/livros/form/:id', (req, res) => {
-    const { id } = req.params;
-
-    const bookDao = new BookDao(db);
-    bookDao.searchById(id).then(livro => {
-      res.marko(
-        require('../views/books/form/form.marko'),
-        { livro: livro }
-      )
-    }).catch(error => console.log(error));    
-  });  
+  app.get('/livros/form/:id', bookController.editorForm());  
 
   app.post('/livros', [
     check('titulo').isLength({ min: 5}).withMessage('Requires a minimum of 5 characters.'),
     check('preco').isCurrency().withMessage('Requires a valid currency value.')
-  ], (req,res) => {    
-    const bookDao = new BookDao(db);
-    
-    const errors = validationResult(req);
+  ], bookController.add());
 
-    if (!errors.isEmpty()) {
-      return res.marko(
-        require('../views/books/form/form.marko'),
-        { livro: {},
-          validationErrors: errors.array()
-        }
-      )
-    }
+  app.put('/livros', bookController.update())
 
-    bookDao.add(req.body)
-    .then(res.redirect('/livros'))
-    .catch(error => console.log(error));
-  });
-
-  app.put('/livros', (req, res) => {
-    const livro = req.body;
-
-    const bookDao = new BookDao(db);
-    bookDao.update(livro).then(res.redirect('/livros'))
-    .catch(error => console.log(error));
-  })
-
-  app.delete('/livros/:id', (req, res) => {
-    const id = req.params.id;
-
-    const bookDao = new BookDao(db);
-    bookDao.remove(id).then(() => res.status(200).end())
-    .catch(error => console.log(error));
-  })
+  app.delete('/livros/:id', bookController.remove())
 }
 
 
