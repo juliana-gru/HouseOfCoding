@@ -11,7 +11,7 @@
 }
 
 .cabecalhoPrincipal-navegacao .login {
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 38px;
     font-size: 20px;
     padding: 5px;
@@ -55,9 +55,9 @@
 }
 
 .rodape .redesSociais .compartilhar-facebook {
-    background-image: url('/estatico/imagens/facebook.png');
+    background-image: url('/static/images/facebook.png');
 }
 
 .rodape .redesSociais .compartilhar-twitter {
-    background-image: url('/estatico/imagens/twitter.png');
+    background-image: url('/static/images/twitter.png');
 }

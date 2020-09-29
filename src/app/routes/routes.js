@@ -3,13 +3,7 @@ const db = require('../../config/database');
 
 module.exports = app => {
   app.get('/', (req, res) => {
-    res.send(`
-    <html>
-      <body>
-        <h1>House of Coding</h1>
-      </body>
-    </html>
-  `);
+    res.marko(require('../views/base/home/home.marko'));
   });
   
   app.get('/livros', (req, res) => {
