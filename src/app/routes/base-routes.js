@@ -4,5 +4,9 @@ const baseController = new BaseController();
 module.exports = app => {
   const baseRoutes = BaseController.routes();  
   
-  app.get(baseRoutes.home, baseController.home());   
+  app.get(baseRoutes.home, baseController.home());
+  
+  app.route(baseRoutes.login)
+    .get(baseController.loginPage())
+    .post(baseController.login())
 }
