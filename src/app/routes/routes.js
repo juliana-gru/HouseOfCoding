@@ -7,22 +7,25 @@ const BaseController = require('../controllers/base-controller');
 const baseController = new BaseController();
 
 module.exports = app => {
-  app.get('/', baseController.home());
-  
-  app.get('/livros', bookController.list());
+  const baseRoutes = BaseController.routes();
+  const bookRoutes = BookController.routes();
 
-  app.get('/livros/form', bookController.registerForm());
+  app.get(baseRoutes.home, baseController.home());
   
-  app.get('/livros/form/:id', bookController.editorForm());  
+  app.get(bookRoutes.list, bookController.list());
 
-  app.post('/livros', [
+  app.get(bookRoutes.register, bookController.registerForm());
+  
+  app.get(bookRoutes.edition, bookController.editorForm());  
+
+  app.post(bookRoutes.list, [
     check('titulo').isLength({ min: 5}).withMessage('Requires a minimum of 5 characters.'),
     check('preco').isCurrency().withMessage('Requires a valid currency value.')
   ], bookController.add());
 
-  app.put('/livros', bookController.update())
+  app.put(bookRoutes.list, bookController.update());
 
-  app.delete('/livros/:id', bookController.remove())
+  app.delete(bookRoutes.removal, bookController.remove());
 }
 
 

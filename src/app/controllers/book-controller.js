@@ -2,7 +2,16 @@ const BookDao = require('../../infra/book-dao');
 const db = require('../../config/database');
 
 const { validationResult } = require('express-validator');
+
 class BookController {
+  static routes() {
+    return {
+      list: 'livros',
+      register: 'livros/form',
+      edition: 'livros/form/:id',
+      removal: 'livros/:id',
+    }
+  }
 
   list() {
     return function (req, res) {
@@ -55,7 +64,7 @@ class BookController {
       }
     
       bookDao.add(req.body)
-        .then(res.redirect('/livros'))
+        .then(res.redirect(this.routes().list))
         .catch(error => console.log(error));
     }
   };
@@ -65,7 +74,7 @@ class BookController {
       const livro = req.body;
   
       const bookDao = new BookDao(db);
-      bookDao.update(livro).then(res.redirect('/livros'))
+      bookDao.update(livro).then(res.redirect(this.routes().list))
       .catch(error => console.log(error));
     }
   };
