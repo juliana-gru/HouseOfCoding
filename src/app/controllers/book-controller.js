@@ -3,6 +3,8 @@ const db = require('../../config/database');
 
 const { validationResult } = require('express-validator');
 
+const templates = require('../views/templates');
+
 class BookController {
   static routes() {
     return {
@@ -19,7 +21,7 @@ class BookController {
       console.log('list')
       bookDao.list().then(livros => {
         res.marko(
-          require('../views/books/list/list.marko'),
+          templates.books.list,
           {
             livros: livros
           }
@@ -30,7 +32,7 @@ class BookController {
 
   registerForm() {
     return function (req, res) {
-      res.marko(require('../views/books/form/form.marko'), {livro: {}});
+      res.marko(templates.books.form, {livro: {}});
     }
   };
 
@@ -41,7 +43,7 @@ class BookController {
       const bookDao = new BookDao(db);
       bookDao.searchById(id).then(livro => {
         res.marko(
-          require('../views/books/form/form.marko'),
+          templates.books.form,
           { livro: livro }
         )
       }).catch(error => console.log(error));
@@ -56,7 +58,7 @@ class BookController {
     
       if (!errors.isEmpty()) {
         return res.marko(
-          require('../views/books/form/form.marko'),
+          templates.books.form,
           { livro: {},
             validationErrors: errors.array()
           }
