@@ -6,17 +6,17 @@ const { validationResult } = require('express-validator');
 class BookController {
   static routes() {
     return {
-      list: 'livros',
-      register: 'livros/form',
-      edition: 'livros/form/:id',
-      removal: 'livros/:id',
+      list: '/livros',
+      register: '/livros/form',
+      edition: '/livros/form/:id',
+      removal: '/livros/:id',
     }
-  }
+  };
 
   list() {
     return function (req, res) {
       const bookDao = new BookDao(db);
-
+      console.log('list')
       bookDao.list().then(livros => {
         res.marko(
           require('../views/books/list/list.marko'),
@@ -64,7 +64,7 @@ class BookController {
       }
     
       bookDao.add(req.body)
-        .then(res.redirect(this.routes().list))
+        .then(res.redirect(BookController.routes().list))
         .catch(error => console.log(error));
     }
   };
@@ -74,7 +74,7 @@ class BookController {
       const livro = req.body;
   
       const bookDao = new BookDao(db);
-      bookDao.update(livro).then(res.redirect(this.routes().list))
+      bookDao.update(livro).then(res.redirect(BookController.routes().list))
       .catch(error => console.log(error));
     }
   };
@@ -87,7 +87,7 @@ class BookController {
       bookDao.remove(id).then(() => res.status(200).end())
       .catch(error => console.log(error));
     }
-  }
+  };
 }
 
 module.exports = BookController;
