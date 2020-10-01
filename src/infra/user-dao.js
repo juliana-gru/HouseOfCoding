@@ -1,7 +1,15 @@
+const uuid = require('uuid/v4');
+
 class UserDao {
 
     constructor(db) {
         this._db = db;
+    }
+
+    createUser(email, password) {
+        return new Promise((resolve, reject) => {
+            //CANT add user to database
+        })
     }
 
     searchByEmail(email) {
