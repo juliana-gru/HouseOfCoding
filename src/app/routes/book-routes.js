@@ -3,9 +3,15 @@ const bookController = new BookController();
 
 const Book = require('../models/book');
 
+const BaseController = require('../controllers/base-controller');
 
 module.exports = app => {  
-  const bookRoutes = BookController.routes();   
+  const bookRoutes = BookController.routes();
+  
+  app.use(bookRoutes.authenticate, (req, res, next) => {
+    if (req.isAuthenticated()) next()
+    else res.redirect(BaseController.routes().login);
+  })
   
   app.get(`${bookRoutes.list}`, bookController.list());
   

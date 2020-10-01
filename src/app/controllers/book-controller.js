@@ -8,6 +8,7 @@ const templates = require('../views/templates');
 class BookController {
   static routes() {
     return {
+      authenticate:'/livros*',
       list: '/livros',
       register: '/livros/form',
       edition: '/livros/form/:id',

@@ -6,13 +6,26 @@ class BaseController {
   static routes() {
     return {
       home: '/',
-      login: '/login'
+      login: '/login',
+      signup: '/signup'
     }
   }
   
   home() {
     return function(req, res) {
       res.marko(templates.base.home);      
+    }
+  }
+
+  signupPage() {
+    return function(req, res) {
+      res.marko(templates.base.signup);
+    }
+  }
+
+  signup() {
+    return function(req, res) {
+      res.marko(templates.base.signup);
     }
   }
 

@@ -9,4 +9,8 @@ module.exports = app => {
   app.route(baseRoutes.login)
     .get(baseController.loginPage())
     .post(baseController.login())
+
+  app.route(baseRoutes.signup)
+    .get(baseController.signupPage())
+    .post(baseController.signup())
 }
